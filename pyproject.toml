@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "enterprise-ai-assistant"
+version = "0.1.0"
+description = ""
+authors = ["Diego Ipaez <diegoipaez2000@gmail.com>"]
+license = "MIT"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.15"
+
+# API
+fastapi = "^0.125.0"
+uvicorn = "^0.38.0"
+
+# Hugging Face
+transformers = "^4.45.0"
+sentence-transformers = "^2.7.0"
+torch = "^2.2.0"
+accelerate = "^0.34.0"
+numpy = "^1.24.0"
+
+# Mongo
+pymongo = "^4.6.0"
+
+# Env
+python-dotenv = "^1.0.1"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
