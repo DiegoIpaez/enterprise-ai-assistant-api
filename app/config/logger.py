@@ -1,7 +1,8 @@
 import re
+from datetime import datetime
 from logging import Formatter
 from pathlib import Path
-from datetime import datetime
+from typing import ClassVar
 
 BASE_LOG_DIR = Path("./storage/logs")
 BASE_LOG_DIR.mkdir(parents=True, exist_ok=True)
@@ -9,7 +10,7 @@ DATE = datetime.now().strftime("%Y-%m-%d")
 
 
 class HttpStatusColorFormatter(Formatter):
-    STATUS_COLOR_MAP = {
+    STATUS_COLOR_MAP: ClassVar[dict[str, str]] = {
         "1": "\033[36m",
         "2": "\033[32m",
         "3": "\033[34m",
@@ -17,7 +18,7 @@ class HttpStatusColorFormatter(Formatter):
         "5": "\033[31m",
     }
 
-    LEVEL_COLOR_MAP = {
+    LEVEL_COLOR_MAP: ClassVar[dict[str, str]] = {
         "DEBUG": "\033[36m",
         "INFO": "\033[34m",
         "WARNING": "\033[33m",
