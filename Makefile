@@ -22,11 +22,11 @@ run:
 dev:
 	poetry run uvicorn $(APP_MODULE) --host $(HOST) --port $(PORT) --reload
 
-shell:
-	poetry shell
+show:
+	poetry show --tree
 
-test:
-	poetry run pytest
+lint:
+	poetry run ruff check .
 
-format:
-	poetry run black .
+lint-fix:
+	poetry run ruff check . --fix
