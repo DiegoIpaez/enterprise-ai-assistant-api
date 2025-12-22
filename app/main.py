@@ -32,6 +32,5 @@ app.add_middleware(
 def health():
     return {
         "status": "ok",
-        "message": "RAG API funcionando",
         "version": settings.API_VERSION,
     }
