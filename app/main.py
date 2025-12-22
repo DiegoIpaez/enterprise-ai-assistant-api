@@ -1,11 +1,12 @@
 import logging
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-from app.database import db_client
-from app.config.settings import settings
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from app.config.logger import LOGGING_CONFIG
+from app.config.settings import settings
+from app.database import db_client
 
 logging.config.dictConfig(LOGGING_CONFIG)
 
