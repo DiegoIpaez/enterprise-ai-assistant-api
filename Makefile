@@ -1,4 +1,4 @@
-APP_MODULE=app.main:app
+APP_MODULE=src.main:app
 HOST=0.0.0.0
 PORT=8000
 

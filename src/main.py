@@ -1,24 +1,28 @@
-import logging
 from contextlib import asynccontextmanager
+from logging.config import dictConfig
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.config.logger import LOGGING_CONFIG
-from app.config.settings import settings
-from app.database import db_client
+from src.config.logger import LOGGING_CONFIG
+from src.config.settings import settings
+from src.database import db_client
 
-logging.config.dictConfig(LOGGING_CONFIG)
+dictConfig(LOGGING_CONFIG)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    db_client.connect()
+    await db_client.connect()
     yield
-    db_client.disconnect()
+    await db_client.disconnect()
 
 
-app = FastAPI(title=settings.API_TITLE, version=settings.API_VERSION, lifespan=lifespan)
+app = FastAPI(
+    title=settings.API_TITLE,
+    version=settings.API_VERSION,
+    lifespan=lifespan,
+)
 
 app.add_middleware(
     CORSMiddleware,
