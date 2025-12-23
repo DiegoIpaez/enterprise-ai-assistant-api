@@ -2,13 +2,14 @@ from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Query, status
 
+from src.utils.pagination_formatter import PaginationResult
+
 from .ai_knowledge_model import AIKnowledge, KnowledgeType, Lenguage
 from .ai_knowledge_schema import (
     AIKnowledgeCreate,
     AIKnowledgeUpdate,
 )
 from .ai_knowledge_service import AIKnowledgeService
-from src.utils.pagination_formatter import PaginationResult
 
 router = APIRouter(prefix="/ai-knowledge", tags=["AI Knowledge"])
 

@@ -1,12 +1,13 @@
+from src.utils.pagination_formatter import (
+    PaginationParams,
+    PaginationResult,
+    pagination_formatter,
+)
+
 from .ai_knowledge_model import AIKnowledge, KnowledgeType, Lenguage
 from .ai_knowledge_schema import (
     AIKnowledgeCreate,
     AIKnowledgeUpdate,
-)
-from src.utils.pagination_formatter import (
-    pagination_formatter,
-    PaginationParams,
-    PaginationResult,
 )
 
 
