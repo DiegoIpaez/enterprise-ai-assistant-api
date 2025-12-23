@@ -3,6 +3,7 @@ import logging
 from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 
+from src.app.ai_knowledge.ai_knowledge_model import AIKnowledge
 from src.config.settings import settings
 
 logger = logging.getLogger("database")
@@ -16,10 +17,9 @@ class MongoDBClient:
         try:
             database = settings.MONGODB_DATABASE
             self.client = AsyncIOMotorClient(settings.MONGODB_URI)
-
             await init_beanie(
                 database=self.client[database],
-                document_models=[],
+                document_models=[AIKnowledge],
             )
             logger.info(f"Connected to MongoDB: {database}")
         except Exception as error:

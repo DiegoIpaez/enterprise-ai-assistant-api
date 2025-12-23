@@ -4,6 +4,7 @@ from logging.config import dictConfig
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+import src.app.routes as api_v1
 from src.config.logger import LOGGING_CONFIG
 from src.config.settings import settings
 from src.database import db_client
@@ -39,3 +40,6 @@ def health():
         "status": "ok",
         "version": settings.API_VERSION,
     }
+
+
+app.include_router(api_v1.router)
