@@ -3,7 +3,7 @@ import logging
 from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from src.app.ai_knowledge.ai_knowledge_model import AIKnowledge
+from src.app.ai_knowledges.ai_knowledges_model import AIKnowledge
 from src.config.settings import settings
 
 logger = logging.getLogger("database")

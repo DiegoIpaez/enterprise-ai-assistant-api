@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from .ai_knowledge_model import KnowledgeType, Lenguage
+from .ai_knowledges_model import KnowledgeType, Lenguage
 
 
 class AIKnowledgeBase(BaseModel):

@@ -4,8 +4,8 @@ from src.utils.pagination_formatter import (
     pagination_formatter,
 )
 
-from .ai_knowledge_model import AIKnowledge, KnowledgeType, Lenguage
-from .ai_knowledge_schema import (
+from .ai_knowledges_model import AIKnowledge, KnowledgeType, Lenguage
+from .ai_knowledges_schema import (
     AIKnowledgeCreate,
     AIKnowledgeUpdate,
 )
@@ -27,11 +27,11 @@ class AIKnowledgeService:
         self,
         page: int = 1,
         limit: int = 10,
+        show_all: bool = False,
         disabled: bool = False,
         language: Lenguage | None = None,
         knowledge_type: KnowledgeType | None = None,
     ) -> PaginationResult[AIKnowledge]:
-        page -= 1
         query_filters = {}
         if disabled:
             query_filters["disabled"] = disabled
@@ -42,14 +42,19 @@ class AIKnowledgeService:
         query_filters["deleted"] = False
 
         find_query = AIKnowledge.find(query_filters)
-        data = await find_query.sort("-created_at").skip(page).limit(limit).to_list()
         total_records = await find_query.count()
+
+        if show_all is False:
+            skip = (page - 1) * limit
+            find_query.skip(skip).limit(limit)
+        data = await find_query.sort("-created_at").to_list()
 
         params = PaginationParams(
             data=data,
             page=page,
             limit=limit,
             total_records=total_records,
+            show_all=show_all
         )
         pagination_data = pagination_formatter(params)
         return pagination_data
