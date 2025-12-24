@@ -27,7 +27,7 @@ class AIKnowledge(Document):
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Settings:
-        name = "ai_knowledge"
+        name = "ai_knowledges"
         use_cache = True
         cache_expiration_time = 3600
 

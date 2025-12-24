@@ -4,21 +4,35 @@ from fastapi import APIRouter, HTTPException, Query, status
 
 from src.utils.pagination_formatter import PaginationResult
 
-from .ai_knowledge_model import AIKnowledge, KnowledgeType, Lenguage
-from .ai_knowledge_schema import (
+from .ai_knowledges_model import AIKnowledge, KnowledgeType, Lenguage
+from .ai_knowledges_schema import (
     AIKnowledgeCreate,
     AIKnowledgeUpdate,
 )
-from .ai_knowledge_service import AIKnowledgeService
+from .ai_knowledges_service import AIKnowledgeService
 
-router = APIRouter(prefix="/ai-knowledge", tags=["AI Knowledge"])
+router = APIRouter(prefix="/ai-knowledges", tags=["AI Knowledge"])
 
 service = AIKnowledgeService()
 
 
-@router.post("/", response_model=AIKnowledge, status_code=status.HTTP_201_CREATED)
-async def create_knowledge(knowledge_data: AIKnowledgeCreate) -> AIKnowledge:
-    return await service.create(knowledge_data)
+@router.get("", response_model=PaginationResult[AIKnowledge])
+async def get_all_knowledge(
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1),
+    show_all: bool = Query(False),
+    disabled: bool = Query(False),
+    language: Annotated[Lenguage | None, Query(alias="language")] = None,
+    knowledge_type: Annotated[KnowledgeType | None, Query(alias="type")] = None,
+):
+    return await service.get_all(
+        page=page,
+        limit=limit,
+        disabled=disabled,
+        language=language,
+        show_all=show_all,
+        knowledge_type=knowledge_type,
+    )
 
 
 @router.get("/{id}", response_model=AIKnowledge)
@@ -31,21 +45,9 @@ async def get_knowledge(id: str) -> AIKnowledge:
     return knowledge
 
 
-@router.get("/", response_model=PaginationResult[AIKnowledge])
-async def get_all_knowledge(
-    page: int = Query(1, ge=1),
-    limit: int = Query(10, ge=1),
-    disabled: bool = Query(False),
-    language: Annotated[Lenguage | None, Query(alias="language")] = None,
-    knowledge_type: Annotated[KnowledgeType | None, Query(alias="type")] = None,
-):
-    return await service.get_all(
-        page=page,
-        limit=limit,
-        disabled=disabled,
-        language=language,
-        knowledge_type=knowledge_type,
-    )
+@router.post("", response_model=AIKnowledge, status_code=status.HTTP_201_CREATED)
+async def create_knowledge(knowledge_data: AIKnowledgeCreate) -> AIKnowledge:
+    return await service.create(knowledge_data)
 
 
 @router.put("/{id}", response_model=AIKnowledge)
