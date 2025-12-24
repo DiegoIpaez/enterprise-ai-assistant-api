@@ -23,6 +23,7 @@ app = FastAPI(
     title=settings.API_TITLE,
     version=settings.API_VERSION,
     lifespan=lifespan,
+    redirect_slashes=False
 )
 
 app.add_middleware(
