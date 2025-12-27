@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, Query, status
 
 from src.utils.pagination_formatter import PaginationResult
 
-from .ai_knowledges_model import AIKnowledge, KnowledgeType, Lenguage
+from .ai_knowledges_model import AIKnowledge, KnowledgeType, Language
 from .ai_knowledges_schema import (
     AIKnowledgeCreate,
     AIKnowledgeUpdate,
@@ -22,7 +22,7 @@ async def get_all_knowledge(
     limit: int = Query(10, ge=1),
     show_all: bool = Query(False),
     disabled: bool = Query(False),
-    language: Annotated[Lenguage | None, Query(alias="language")] = None,
+    language: Annotated[Language | None, Query(alias="language")] = None,
     knowledge_type: Annotated[KnowledgeType | None, Query(alias="type")] = None,
 ):
     return await service.get_all(
