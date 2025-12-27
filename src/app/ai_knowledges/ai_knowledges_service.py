@@ -4,7 +4,7 @@ from src.utils.pagination_formatter import (
     pagination_formatter,
 )
 
-from .ai_knowledges_model import AIKnowledge, KnowledgeType, Lenguage
+from .ai_knowledges_model import AIKnowledge, KnowledgeType, Language
 from .ai_knowledges_schema import (
     AIKnowledgeCreate,
     AIKnowledgeUpdate,
@@ -29,7 +29,7 @@ class AIKnowledgeService:
         limit: int = 10,
         show_all: bool = False,
         disabled: bool = False,
-        language: Lenguage | None = None,
+        language: Language | None = None,
         knowledge_type: KnowledgeType | None = None,
     ) -> PaginationResult[AIKnowledge]:
         query_filters = {}
