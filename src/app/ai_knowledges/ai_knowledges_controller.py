@@ -2,18 +2,22 @@ from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Query, status
 
+from src.ai.rag.rag_orchestrator import RAGOrchestrator
 from src.utils.pagination_formatter import PaginationResult
 
 from .ai_knowledges_model import AIKnowledge, KnowledgeType, Language
 from .ai_knowledges_schema import (
     AIKnowledgeCreate,
     AIKnowledgeUpdate,
+    AskRequest,
+    AskResponse,
 )
 from .ai_knowledges_service import AIKnowledgeService
 
 router = APIRouter(prefix="/ai-knowledges", tags=["AI Knowledge"])
 
 service = AIKnowledgeService()
+rag_orchestrator = RAGOrchestrator()
 
 
 @router.get("", response_model=PaginationResult[AIKnowledge])
@@ -63,3 +67,16 @@ async def update_knowledge(id: str, update_data: AIKnowledgeUpdate) -> AIKnowled
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_knowledge(id: str) -> None:
     await service.delete(id)
+
+
+@router.post(
+    "/ask",
+    response_model=AskResponse,
+    status_code=status.HTTP_200_OK,
+)
+async def ask_question(request: AskRequest) -> AskResponse:
+    answer = await rag_orchestrator.ask(
+        question=request.question,
+        language=request.language,
+    )
+    return AskResponse(answer=answer)
