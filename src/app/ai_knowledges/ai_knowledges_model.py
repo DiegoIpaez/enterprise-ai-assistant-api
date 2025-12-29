@@ -25,6 +25,7 @@ class AIKnowledge(Document):
     language: Language = Field(default=Language.SPANISH)
     disabled: bool = Field(default=False)
     deleted: bool = Field(default=False)
+    embedding: List[float] | None = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
@@ -41,3 +42,11 @@ class AIKnowledge(Document):
     @before_event(Insert, Replace)
     def set_updated_at(self):
         self.updated_at = datetime.utcnow()
+
+    @before_event(Replace, Insert)
+    def validate_embedding_for_active_documents(self):
+        if not self.disabled and not self.deleted and self.embedding is None:
+            raise ValueError(
+                "Active knowledge documents must have an embedding. "
+                "Generate embedding before saving."
+            )

@@ -1,3 +1,5 @@
+from src.ai.embeddings import EmbeddingService
+from src.ai.vector_search_service import VectorSearchService, VectorSearchResult
 from src.utils.pagination_formatter import (
     PaginationParams,
     PaginationResult,
@@ -12,8 +14,20 @@ from .ai_knowledges_schema import (
 
 
 class AIKnowledgeService:
+    def __init__(self):
+        self._embedding_service = EmbeddingService()
+        self._vector_search_service = VectorSearchService()
+    
     async def create(self, knowledge_data: AIKnowledgeCreate) -> AIKnowledge:
-        ai_knowledge = AIKnowledge(**knowledge_data.model_dump())
+        knowledge_dict = knowledge_data.model_dump()
+        
+        try:
+            embedding = self._embedding_service.generate_embedding(knowledge_dict["content"])
+            knowledge_dict["embedding"] = embedding
+        except Exception as e:
+            raise ValueError(f"Failed to generate embedding: {str(e)}") from e
+        
+        ai_knowledge = AIKnowledge(**knowledge_dict)
         await ai_knowledge.save()
         return ai_knowledge
 
@@ -70,6 +84,13 @@ class AIKnowledgeService:
         if not update_fields:
             return ai_knowledge
 
+        if "content" in update_fields:
+            try:
+                embedding = self._embedding_service.generate_embedding(update_fields["content"])
+                update_fields["embedding"] = embedding
+            except Exception as e:
+                raise ValueError(f"Failed to generate embedding: {str(e)}") from e
+
         updated_document = ai_knowledge.model_copy(update=update_fields)
         await updated_document.save()
         return updated_document
@@ -81,3 +102,17 @@ class AIKnowledgeService:
             await ai_knowledge.save()
             return True
         return False
+
+    async def search_by_similarity(
+        self,
+        query: str,
+        limit: int = 5,
+        language: Lenguage | None = None,
+        min_score: float | None = None,
+    ) -> list[VectorSearchResult]:
+        return await self._vector_search_service.search(
+            query=query,
+            limit=limit,
+            language=language,
+            min_score=min_score,
+        )
