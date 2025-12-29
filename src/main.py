@@ -6,8 +6,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 import src.app.routes as api_v1
+from src.ai.llm.tiny_llama_client import TinyLlamaClient
 from src.ai.embeddings import EmbeddingService
-from src.ai.llm.phi3_client import Phi3Client
 from src.config.logger import LOGGING_CONFIG
 from src.config.settings import settings
 from src.database import db_client
@@ -24,8 +24,8 @@ async def lifespan(app: FastAPI):
     logger.info("Embedding model initialized successfully")
 
     logger.info("Initializing Phi-3 model...")
-    phi3_client = Phi3Client()
-    phi3_client.initialize()
+    tiny_llama_client = TinyLlamaClient()
+    tiny_llama_client.initialize()
     logger.info("Phi-3 model initialized successfully")
 
     await db_client.connect()

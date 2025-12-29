@@ -1,5 +1,5 @@
+from src.ai.llm.tiny_llama_client import TinyLlamaClient
 from src.ai.context_builder import ContextBuilder
-from src.ai.llm.phi3_client import Phi3Client
 from src.ai.prompt_builder import PromptBuilder
 from src.ai.vector_search_service import VectorSearchService
 from src.app.ai_knowledges.ai_knowledges_model import Language
@@ -11,12 +11,12 @@ class RAGOrchestrator:
         vector_search_service: VectorSearchService | None = None,
         context_builder: ContextBuilder | None = None,
         prompt_builder: PromptBuilder | None = None,
-        phi3_client: Phi3Client | None = None,
+        tiny_llama_client: TinyLlamaClient | None = None,
     ):
         self._vector_search_service = vector_search_service or VectorSearchService()
         self._context_builder = context_builder or ContextBuilder()
         self._prompt_builder = prompt_builder or PromptBuilder()
-        self._phi3_client = phi3_client or Phi3Client()
+        self._phi3_client = tiny_llama_client or TinyLlamaClient()
 
     async def ask(self, question: str, language: Language | None = None) -> str:
         if not question or not question.strip():
