@@ -1,5 +1,5 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
 class Phi3Client:
@@ -21,30 +21,23 @@ class Phi3Client:
         return cls._instance
 
     def initialize(self) -> None:
-        """
-        Inicializa el modelo Phi-3.
-        
-        Debe llamarse una sola vez al levantar la aplicación.
-        La primera carga puede ser lenta (descarga + carga en memoria),
-        pero luego es rápida para inferencia.
-        """
         if self._model is None or self._tokenizer is None:
             self._tokenizer = AutoTokenizer.from_pretrained(self._model_name)
-            
+
             # Configurar el tokenizer con pad_token si no existe
             if self._tokenizer.pad_token is None:
                 self._tokenizer.pad_token = self._tokenizer.eos_token
-            
+
             self._model = AutoModelForCausalLM.from_pretrained(
                 self._model_name,
                 torch_dtype=torch.float16 if self._device == "cuda" else torch.float32,
                 device_map="auto" if self._device == "cuda" else None,
                 trust_remote_code=False,  # Cambiar a False para evitar código obsoleto
             )
-            
+
             if self._device == "cpu":
                 self._model = self._model.to(self._device)
-            
+
             self._model.eval()  # Modo evaluación
 
     def is_initialized(self) -> bool:

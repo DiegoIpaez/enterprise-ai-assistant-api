@@ -1,4 +1,3 @@
-from typing import List
 
 from src.ai.vector_search_service import VectorSearchResult
 from src.config.settings import settings
@@ -8,7 +7,7 @@ class ContextBuilder:
     def __init__(self, max_documents: int | None = None):
         self._max_documents = max_documents or settings.AI_MAX_RESULTS
 
-    def build(self, search_results: List[VectorSearchResult]) -> str:
+    def build(self, search_results: list[VectorSearchResult]) -> str:
         if not search_results:
             return ""
 
@@ -28,7 +27,7 @@ class ContextBuilder:
         return context
 
     def build_with_metadata(
-        self, search_results: List[VectorSearchResult], include_scores: bool = False
+        self, search_results: list[VectorSearchResult], include_scores: bool = False
     ) -> str:
         if not search_results:
             return ""

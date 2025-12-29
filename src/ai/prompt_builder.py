@@ -8,7 +8,7 @@ class PromptBuilder:
         self._system_message = system_message or self._get_default_system_message()
 
     def _get_default_system_message(self) -> str:
-        return """Sos un asistente de IA especializado en responder preguntas usando únicamente la información proporcionada en el CONTEXTO.
+        return f"""Sos un asistente de IA especializado en responder preguntas usando únicamente la información proporcionada en el CONTEXTO.
 
 REGLAS ESTRICTAS:
 - Respondé ÚNICAMENTE usando la información del CONTEXTO.
@@ -16,9 +16,7 @@ REGLAS ESTRICTAS:
 - Si la respuesta no está en el CONTEXTO, debés responder: "No tengo información suficiente para responder esta pregunta".
 - Si el CONTEXTO está vacío, debés responder: "No tengo información disponible para responder esta pregunta".
 - Mantené tus respuestas claras, concisas y basadas exclusivamente en el CONTEXTO.
-- Respondé en {language}.""".format(
-            language=self._language
-        )
+- Respondé en {self._language}."""
 
     def build(
         self,

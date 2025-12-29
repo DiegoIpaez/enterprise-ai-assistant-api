@@ -1,6 +1,5 @@
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional
 
 from beanie import Document, Insert, Replace, before_event
 from pydantic import Field
@@ -19,13 +18,13 @@ class Language(str, Enum):
 
 class AIKnowledge(Document):
     content: str
-    embedding: Optional[List[float]] = None
+    embedding: list[float] | None = None
     type: KnowledgeType = Field(default=KnowledgeType.FAQ)
     tags: list[str] = Field(default_factory=list)
     language: Language = Field(default=Language.SPANISH)
     disabled: bool = Field(default=False)
     deleted: bool = Field(default=False)
-    embedding: List[float] | None = Field(default=None)
+    embedding: list[float] | None = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 

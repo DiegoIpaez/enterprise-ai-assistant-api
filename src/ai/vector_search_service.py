@@ -1,7 +1,6 @@
-from typing import List
 
 from src.ai.embeddings import EmbeddingService
-from src.app.ai_knowledges.ai_knowledges_model import AIKnowledge, Lenguage
+from src.app.ai_knowledges.ai_knowledges_model import AIKnowledge, Language
 from src.config.settings import settings
 from src.database import db_client
 
@@ -30,9 +29,9 @@ class VectorSearchService:
         query: str,
         limit: int = 5,
         num_candidates: int = 100,
-        language: Lenguage | None = None,
+        language: Language | None = None,
         min_score: float | None = None,
-    ) -> List[VectorSearchResult]:
+    ) -> list[VectorSearchResult]:
         if not query or not query.strip():
             raise ValueError("Query cannot be empty")
 
@@ -95,12 +94,12 @@ class VectorSearchService:
 
     async def search_by_embedding(
         self,
-        query_embedding: List[float],
+        query_embedding: list[float],
         limit: int = 5,
         num_candidates: int = 100,
-        language: Lenguage | None = None,
+        language: Language | None = None,
         min_score: float | None = None,
-    ) -> List[VectorSearchResult]:
+    ) -> list[VectorSearchResult]:
         if not query_embedding:
             raise ValueError("Query embedding cannot be empty")
 

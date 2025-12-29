@@ -2,7 +2,7 @@ from src.ai.context_builder import ContextBuilder
 from src.ai.llm.phi3_client import Phi3Client
 from src.ai.prompt_builder import PromptBuilder
 from src.ai.vector_search_service import VectorSearchService
-from src.app.ai_knowledges.ai_knowledges_model import Lenguage
+from src.app.ai_knowledges.ai_knowledges_model import Language
 
 
 class RAGOrchestrator:
@@ -18,7 +18,7 @@ class RAGOrchestrator:
         self._prompt_builder = prompt_builder or PromptBuilder()
         self._phi3_client = phi3_client or Phi3Client()
 
-    async def ask(self, question: str, language: Lenguage | None = None) -> str:
+    async def ask(self, question: str, language: Language | None = None) -> str:
         if not question or not question.strip():
             raise ValueError("Question cannot be empty")
 
@@ -29,7 +29,7 @@ class RAGOrchestrator:
 
         context = self._context_builder.build(search_results)
 
-        prompt_language = "inglés" if language == Lenguage.ENGLISH else "español"
+        prompt_language = "inglés" if language == Language.ENGLISH else "español"
         prompt_builder = PromptBuilder(language=prompt_language)
         prompt = prompt_builder.build_for_phi3(context=context, question=question)
 

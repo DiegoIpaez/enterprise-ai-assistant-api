@@ -1,4 +1,4 @@
-from typing import List
+
 from sentence_transformers import SentenceTransformer
 
 
@@ -21,7 +21,7 @@ class EmbeddingService:
         """Verify if the model is initialized."""
         return self._model is not None
 
-    def generate_embedding(self, text: str) -> List[float]:
+    def generate_embedding(self, text: str) -> list[float]:
         if not self.is_initialized():
             raise RuntimeError(
                 "Embedding model not initialized. Call initialize() first."

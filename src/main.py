@@ -1,6 +1,6 @@
+import logging
 from contextlib import asynccontextmanager
 from logging.config import dictConfig
-import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
