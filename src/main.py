@@ -1,4 +1,3 @@
-import logging
 from contextlib import asynccontextmanager
 from logging.config import dictConfig
 
@@ -13,20 +12,15 @@ from src.config.settings import settings
 from src.database import db_client
 
 dictConfig(LOGGING_CONFIG)
-logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Initializing embedding model...")
     embedding_service = EmbeddingService()
     embedding_service.initialize()
-    logger.info("Embedding model initialized successfully")
 
-    logger.info("Initializing Phi-3 model...")
     tiny_llama_client = TinyLlamaClient()
     tiny_llama_client.initialize()
-    logger.info("Phi-3 model initialized successfully")
 
     await db_client.connect()
 

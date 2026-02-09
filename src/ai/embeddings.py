@@ -1,5 +1,7 @@
-
+import logging
 from sentence_transformers import SentenceTransformer
+
+logger = logging.getLogger("ai-embeddings")
 
 
 class EmbeddingService:
@@ -16,6 +18,7 @@ class EmbeddingService:
     def initialize(self) -> None:
         if self._model is None:
             self._model = SentenceTransformer(self._model_name)
+        logger.info(f"Embedding model {self._model_name} loaded")
 
     def is_initialized(self) -> bool:
         """Verify if the model is initialized."""

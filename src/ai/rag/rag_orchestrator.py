@@ -27,11 +27,10 @@ class RAGOrchestrator:
             language=language,
         )
 
-        context = self._context_builder.build(search_results)
-
         prompt_language = "inglés" if language == Language.ENGLISH else "español"
         prompt_builder = PromptBuilder(language=prompt_language)
-        prompt = prompt_builder.build_for_phi3(context=context, question=question)
 
+        context = self._context_builder.build(search_results)
+        prompt = prompt_builder.build_for_tinyllama(context=context, question=question)
         answer = self._phi3_client.generate(prompt)
         return answer

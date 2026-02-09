@@ -45,7 +45,7 @@ REGLAS ESTRICTAS:
         prompt = "\n".join(prompt_parts)
         return prompt
 
-    def build_for_phi3(
+    def build_for_tinyllama(
         self,
         context: str,
         question: str,
@@ -54,8 +54,8 @@ REGLAS ESTRICTAS:
             raise ValueError("Question cannot be empty")
 
         user_message_parts = []
-
         user_message_parts.append("CONTEXTO:")
+
         if not context or not context.strip():
             user_message_parts.append("(No hay información disponible)")
         else:
@@ -64,39 +64,12 @@ REGLAS ESTRICTAS:
         user_message_parts.append("")
         user_message_parts.append("PREGUNTA:")
         user_message_parts.append(question.strip())
-
         user_message = "\n".join(user_message_parts)
 
         prompt = f"""<|system|>
-{self._system_message}
-<|end|>
+{self._system_message}</s>
 <|user|>
-{user_message}
-<|end|>
+{user_message}</s>
 <|assistant|>
 """
-
-        return prompt
-
-    def build_simple(
-        self,
-        context: str,
-        question: str,
-    ) -> str:
-        if not question or not question.strip():
-            raise ValueError("Question cannot be empty")
-
-        if not context or not context.strip():
-            context_text = "No hay información disponible en la base de conocimientos."
-        else:
-            context_text = f"Información relevante:\n\n{context}"
-
-        prompt = f"""{self._system_message}
-
-{context_text}
-
-Pregunta del usuario: {question.strip()}
-
-Responde basándote únicamente en la información proporcionada:"""
-
         return prompt
