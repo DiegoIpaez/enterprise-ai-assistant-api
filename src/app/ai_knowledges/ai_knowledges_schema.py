@@ -7,7 +7,7 @@ class AIKnowledgeBase(BaseModel):
     content: str
     type: KnowledgeType
     tags: list[str] = Field(default_factory=list)
-    language: str
+    language: Language
     disabled: bool = Field(default=False)
 
 
