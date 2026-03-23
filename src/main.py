@@ -5,8 +5,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 import src.app.routes as api_v1
-from src.ai.llm.tiny_llama_client import TinyLlamaClient
 from src.ai.embeddings import EmbeddingService
+from src.ai.llm.tiny_llama_client import TinyLlamaClient
 from src.config.logger import LOGGING_CONFIG
 from src.config.settings import settings
 from src.database import db_client

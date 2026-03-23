@@ -1,5 +1,5 @@
-from src.ai.llm.tiny_llama_client import TinyLlamaClient
 from src.ai.context_builder import ContextBuilder
+from src.ai.llm.tiny_llama_client import TinyLlamaClient
 from src.ai.prompt_builder import PromptBuilder
 from src.ai.vector_search_service import VectorSearchService
 from src.app.ai_knowledges.ai_knowledges_model import Language

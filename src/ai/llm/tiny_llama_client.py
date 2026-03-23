@@ -1,7 +1,7 @@
-import torch
 import logging
-from transformers import AutoModelForCausalLM, AutoTokenizer
 
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 logger = logging.getLogger("ai-llm")
 
@@ -45,7 +45,7 @@ class TinyLlamaClient:
             low_cpu_mem_usage=True,
         )
 
-        self._model = self._model.to(self._device) # type: ignore
+        self._model = self._model.to(self._device)  # type: ignore
         self._model.eval()
         logger.info(f"Model {self._model_name} loaded on {self._device}")
 
