@@ -5,6 +5,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 import src.app.routes as api_v1
+from src.ai.llm.tiny_llama_client import TinyLlamaClient
+from src.ai.embeddings import EmbeddingService
 from src.config.logger import LOGGING_CONFIG
 from src.config.settings import settings
 from src.database import db_client
@@ -14,7 +16,14 @@ dictConfig(LOGGING_CONFIG)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    embedding_service = EmbeddingService()
+    embedding_service.initialize()
+
+    tiny_llama_client = TinyLlamaClient()
+    tiny_llama_client.initialize()
+
     await db_client.connect()
+
     yield
     await db_client.disconnect()
 
@@ -23,7 +32,7 @@ app = FastAPI(
     title=settings.API_TITLE,
     version=settings.API_VERSION,
     lifespan=lifespan,
-    redirect_slashes=False
+    redirect_slashes=False,
 )
 
 app.add_middleware(

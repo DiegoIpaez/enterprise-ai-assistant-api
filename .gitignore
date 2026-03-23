@@ -208,3 +208,6 @@ __marimo__/
 
 # IDES
 .vscode/
+
+# macOS
+.DS_Store
